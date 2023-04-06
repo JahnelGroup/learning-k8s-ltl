@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jg-hello-world # <-- This is the name of the Deployment
+spec:
+  replicas: 1 # <-- This is the number of Pods that we want to run
+  selector:
+    matchLabels:
+      app: jg-hello-world # <-- This is the label that the Service will use to find the Pods
+  template:
+    metadata:
+      labels:
+        app: jg-hello-world # <-- This is the label that the Service will use to find the Pods
+    spec:
+      containers:
+        - name: jg-hello-world
+          # Use the local Docker image that we built instead of trying to pull it from Docker Hub
+          imagePullPolicy: Never
+          image: jg-hello-world # <-- This is the name of the Docker image that we built
+          ports:
+            - containerPort: 8888 # <-- This is the port that the app is listening on
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jg-helloworld-deploy # <-- This is the name of the Service
+  labels:
+    app: jg-hello-world # <-- This is the label that the Service will use to find the Pods
+spec:
+  ports:
+    - port: 8888
+      protocol: TCP
+      name: jg-hello-world
+  selector:
+    app: jg-hello-world
+  type: LoadBalancer
+  # type determines how the Service is exposed. Defaults to ClusterIP. Valid options are ExternalName, ClusterIP, NodePort, and LoadBalancer. "ClusterIP" allocates a cluster-internal IP address for load-balancing to endpoints. Endpoints are determined by the selector or if that is not specified, by manual construction of an Endpoints object or EndpointSlice objects. If clusterIP is "None", no virtual IP is allocated and the endpoints are published as a set of endpoints rather than a virtual IP. "NodePort" builds on ClusterIP and allocates a port on every node which routes to the same endpoints as the clusterIP. "LoadBalancer" builds on NodePort and creates an external load-balancer (if supported in the current cloud) which routes to the same endpoints as the clusterIP. "ExternalName" aliases this service to the specified externalName. Several other fields do not apply to ExternalName services. More info: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
