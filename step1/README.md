@@ -45,8 +45,6 @@ You can deploy the service to Kubernetes using the following commands:
 
 `kubectl apply -f deployment.yaml`
 
-`kubectl apply -f service.yaml`
-
 ### Use the following commands to assess the status of your pod
 `kubectl get pods`
 `kubectl logs -f <pod name>`
