@@ -76,3 +76,6 @@ Provides a description of all pods in the k8s cluster.
 `kubectl get svc`
 
 Describes description of all services in the k8s cluster
+
+### Testing
+`curl localhost:8888`
