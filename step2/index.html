@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My GIF Gallery</title>
+  </head>
+  <body>
+    <h1>My GIF Gallery</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <label for="gif">Choose a GIF to upload:</label>
+      <input type="file" id="gif" name="gif" />
+      <input type="submit" value="Upload" />
+    </form>
+    <hr />
+
+    {{if .GIFs}} {{range .GIFs}}
+    <img src="/images/{{.}}" width="200" height="200" />
+    {{end}} {{else}}
+    <p>No GIFs found.</p>
+    {{end}}
+  </body>
+</html>

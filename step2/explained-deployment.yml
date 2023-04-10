@@ -1,0 +1,58 @@
+apiVersion: apps/v1 # The API version of the Kubernetes deployment object
+kind: Deployment # The kind of Kubernetes object (deployment, service, etc.)
+metadata: # Metadata for the deployment object
+  name: gif-deployment # The name of the deployment object
+spec: # The specification for the deployment object
+  replicas: 1 # Number of replicas for the deployment object
+  selector: # Selector to match labels of pods managed by this deployment
+    matchLabels:
+      app: gif # The label to match
+  template: # The template for the pods managed by the deployment
+    metadata: # Metadata for the pod template
+      labels:
+        app: gif # The label for the pod
+    spec: # The specification for the pod
+      containers: # A list of containers to run in the pod
+        - name: gif # The name of the container
+          image: gif-service:latest # The Docker image to run in the container
+          env: # Environment variables to set in the container
+            - name: SERVICE_PORT # The name of the environment variable
+              value: "8888" # The value of the environment variable
+            - name: REDIS_URL # The name of the environment variable
+              value: "redis:6379" # The value of the environment variable
+          resources: # Resource limits for the container
+            limits:
+              memory: 70Mi # Maximum amount of memory the container can use
+---
+apiVersion: v1 # The API version of the Kubernetes service object
+kind: Service # The kind of Kubernetes object (deployment, service, etc.)
+metadata: # Metadata for the service object
+  name: gif-service # The name of the service object
+spec: # The specification for the service object
+  selector: # Selector for the pods that the service should route traffic to
+    app: gif # The label to match
+  ports: # Ports to expose on the service
+    - protocol: TCP # The protocol to use (TCP or UDP)
+      port: 8888 # The port to expose on the service
+      targetPort: 8888 # The port that the service should route traffic to
+  type: ClusterIP # The type of service to create
+---
+apiVersion: v1 # The API version of the Kubernetes service object
+kind: Service # The kind of Kubernetes object (deployment, service, etc.)
+metadata: # Metadata for the service object
+  name: redis # The name of the service object
+  labels: # The labels for the service object
+    app: redis # The label to apply to the service
+spec: # The specification for the service object
+  ports: # Ports to expose on the service
+    - port: 6379 # The port to expose on the service
+      targetPort: 6379 # The port that the service should route traffic to
+  selector: # Selector for the pods that the service should route traffic to
+    app: redis # The label to match
+---
+apiVersion: apps/v1 # The API version of the Kubernetes deployment object
+kind: Deployment # The kind of Kubernetes object (deployment, service, etc.)
+metadata: # Metadata for the deployment object
+  name: redis # The name of the deployment object
+spec: # The specification for the deployment object
+  replicas: 1 # Number of replicas for the deployment object
