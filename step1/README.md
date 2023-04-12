@@ -26,13 +26,13 @@ If all was done correctly, you should now be able to run kind create cluster
 ### Configure Kind
 `kind create cluster --config kind-config.yaml`
 
-This command tells kind to create a k8s cluster inside Docker that concists of single control plane and 3 worker.
+This command tells kind to create a k8s cluster inside Docker that consists of single control plane and 3 worker.
 
 ### Create the deployment and service
 
 Make sure Kind is running by executing `kubectl get nodes` at your command prompt and verifying that `kind-control-plane` and at least one kind node appear with a status of `Ready`
 
-
+g
 ### Build and push the Docker image
 You can deploy the service to Kubernetes using the following commands:
 
