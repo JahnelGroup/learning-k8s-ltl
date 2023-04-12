@@ -29,7 +29,7 @@ func main() {
 
 func heavyCPUWork() {
 	for i := 0; i < 1000000000; i++ {
-		_ = i * i
+		fmt.Printf("heavyCPUWork: %i \n", i*i)
 	}
 }
 

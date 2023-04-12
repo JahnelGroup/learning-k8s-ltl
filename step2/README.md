@@ -26,5 +26,5 @@
 
 
 ### Troubleshooting
-You can then monitor the status of the Redis Deployment or the Gif service and Autoscaler using the `kubectl get deployment` and `kubectl get hpa gif-deployment`, respectively.
 
+You can monitor the status of the Redis Deployment by using the `kubectl get deployment`.
