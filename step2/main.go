@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/gomodule/redigo/redis"
@@ -17,6 +18,7 @@ var redisPath string
 func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/images/", handleImageRequest)
+	http.HandleFunc("/mine-bitcoin", heavyCPULoadHandler)
 
 	http.HandleFunc("/upload", uploadHandler)
 	redisPath = os.Getenv("REDIS_URL")
@@ -25,9 +27,28 @@ func main() {
 
 }
 
+func heavyCPUWork() {
+	for i := 0; i < 1000000000; i++ {
+		_ = i * i
+	}
+}
+
+func heavyCPULoadHandler(w http.ResponseWriter, r *http.Request) {
+	iterations, err := strconv.Atoi(r.URL.Query().Get("iterations"))
+	if err != nil {
+		iterations = 100
+	}
+
+	for i := 0; i < iterations; i++ {
+		heavyCPUWork()
+	}
+
+	fmt.Fprintf(w, "Done %d iterations of heavy CPU work", iterations)
+}
+
 func getImageFromRedis(key string) ([]byte, error) {
 	// Establish a connection to Redis
-	conn, err := redis.Dial("tcp", "localhost:6379")
+	conn, err := redis.Dial("tcp", redisPath)
 	if err != nil {
 		return nil, err
 	}
