@@ -22,7 +22,7 @@
 5. Run `kubectl get nodes` and note the note configuration.
 6. Run`kubectl get pod <gif-deployment-pod-name> -o wide` and note the value in the NODE column
 7. Delete one of the worker nodes via `kubectl delete node <node-name>`
-8. Note how k8s responds in order to maintain ahe desired state via running `kubectl get pods` and `kubectl get pod <gif-deployment-pod-name> -o wide` again.
+8. Note how k8s responds in order to maintain the desired state via running `kubectl get pods` and `kubectl get pod <gif-deployment-pod-name> -o wide` again.
 
 
 ### Troubleshooting
